@@ -1,0 +1,53 @@
+
+
+Corrige également le code car à chaque fois que j'appuie sur le bouton save ou load
+le serpent se dirige dans une seule direction alors qu'il doit se deplacer normalement.
+ Je veux que le serpent utilise la fonction move meme apres avoir cliqué le bouton load ou save comme 
+ dans la classe GamePanel:@Override
+    public void actionPerformed(ActionEvent e) {
+        snake.move();
+
+        if (snake.hasCrossedBorder()) {
+            score--;
+        }
+
+        if (snake.hasCollidedWithApple(apple)) {
+            snake.grow();
+            apple.generateNewPosition();
+            score++;
+        }
+
+        repaint();
+    }Voici la classe Snake: public void move() {
+        Point head = body.getFirst();
+        Point newPoint = new Point(head);
+
+        switch (direction) {
+            case 0: newPoint.y--; break; // UP
+            case 1: newPoint.x++; break; // RIGHT
+            case 2: newPoint.y++; break; // DOWN
+            case 3: newPoint.x--; break; // LEFT
+        }
+
+        crossedBorder = false;
+
+        // Vérifier si le serpent sort des limites et le faire réapparaître de l'autre côté
+        if (newPoint.x < 0) {
+            newPoint.x = cols - 1;
+            crossedBorder = true;
+        } else if (newPoint.x >= cols) {
+            newPoint.x = 0;
+            crossedBorder = true;
+        }
+        if (newPoint.y < 0) {
+            newPoint.y = rows - 1;
+            crossedBorder = true;
+        } else if (newPoint.y >= rows) {
+            newPoint.y = 0;
+            crossedBorder = true;
+        }
+
+        body.addFirst(newPoint);
+        body.removeLast(); // Supprimer la queue pour que la longueur reste constante
+    }
+Corrige donc GameWindow
